@@ -23,3 +23,9 @@ spring:
 
 bootstrap:
   server: ${BOOTSTRAP_SERVER}
+
+app:
+  key: ${APP_KEY}
+  secretkey: ${APP_SECRETKEY}
+kis:
+  access-token: ${ACCESS_TOKEN}
