@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BankUpdateDTO {
 
-    private String account;
+    private String accountNum;
     private int tradePrice;
 }
