@@ -1,12 +1,11 @@
-package sol.shinhansecuirty.sosolbe.Option.Controller;
+package sol.shinhansecuirty.sosolbe.Controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sol.shinhansecuirty.sosolbe.Option.DTO.StockInfoDTO;
-import sol.shinhansecuirty.sosolbe.Option.Service.OptionService;
+import sol.shinhansecuirty.sosolbe.DTO.StockInfoDTO;
+import sol.shinhansecuirty.sosolbe.Service.OptionService;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

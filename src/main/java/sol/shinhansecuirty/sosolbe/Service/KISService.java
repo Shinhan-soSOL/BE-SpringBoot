@@ -1,11 +1,11 @@
-package sol.shinhansecuirty.sosolbe.Option.Service;
+package sol.shinhansecuirty.sosolbe.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import sol.shinhansecuirty.sosolbe.Option.DTO.CurrentPriceDTO;
+import sol.shinhansecuirty.sosolbe.DTO.CurrentPriceDTO;
 
 @Service
 @RequiredArgsConstructor

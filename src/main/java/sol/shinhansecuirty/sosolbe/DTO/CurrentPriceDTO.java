@@ -1,4 +1,4 @@
-package sol.shinhansecuirty.sosolbe.Option.DTO;
+package sol.shinhansecuirty.sosolbe.DTO;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
