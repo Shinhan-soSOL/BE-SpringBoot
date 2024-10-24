@@ -47,7 +47,8 @@ jobs:
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/sosol-server
           docker stop sosol-springboot || true
           docker rm sosol-springboot || true
-          docker run -d --name sosol-springboot \
-          -p 8081:8080 \
+
+          docker run -d   --name sosol-springboot \
+          --network host  \
           --env-file /home/ubuntu/.env \
           ${{ secrets.DOCKERHUB_USERNAME }}/sosol-server
