@@ -19,4 +19,5 @@ public class OrderDto {
     private int accountId;
     private String stockCode;
     private Integer quantity;
+    private int currentBalance;
 }
