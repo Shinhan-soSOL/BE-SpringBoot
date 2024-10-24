@@ -28,7 +28,8 @@ public class TradeService {
     @Transactional
     public BuyStockResponseDTO updateAccount(BankUpdateDTO bankUpdateDTO) {
         //계좌 정보 조회
-        Account myBank = accountRepository.findByAccountAndType(bankUpdateDTO.getAccount(), "은행");
+        Account myBank = accountRepository.findByAccountNumAndType(bankUpdateDTO.getAccountNum(), "은행");
+        System.out.println(bankUpdateDTO.getAccountNum());
         System.out.println("차감 전 : " + myBank.getBalance());
         //은행계좌에서 차감
         myBank.setBalance(myBank.getBalance() - bankUpdateDTO.getTradePrice());
@@ -36,7 +37,7 @@ public class TradeService {
         //잔액에서 잔돈 추출, 은행계좌 잔돈 차감
         int divisor = myBank.getBalanceSize();
         int small = myBank.getBalance() % divisor;
-        myBank.setBalance(myBank.getBalance()/divisor);
+        myBank.setBalance((myBank.getBalance()/divisor)*1000);
         System.out.println("잔돈 : " + small);
         System.out.println("잔돈 추출 후 은행 : " + myBank.getBalance());
         accountRepository.save(myBank);
@@ -71,7 +72,7 @@ public class TradeService {
                     .quantity(quantity)
                     .currentBalance(smallChange.getCurrentBalance())
                     .build();
-            kafkaTemplate.send("Order", orderDto);
+            kafkaTemplate.send("order", orderDto);
 
             BuyStockDTO buyStockDTO = BuyStockDTO.builder()
                     .stockName(target.getStockName())
