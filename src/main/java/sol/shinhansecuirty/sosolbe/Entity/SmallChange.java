@@ -1,13 +1,13 @@
 package sol.shinhansecuirty.sosolbe.Entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name="small_change")
 public class SmallChange {
 
