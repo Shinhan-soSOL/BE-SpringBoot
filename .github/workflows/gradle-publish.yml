@@ -49,5 +49,5 @@ jobs:
           docker rm sosol-springboot || true
           docker run -d --name sosol-springboot \
           -p 8081:8080 \
-          -v /home/ubuntu/.env:/app/.env \
+          --env-file /home/ubuntu/.env \
           ${{ secrets.DOCKERHUB_USERNAME }}/sosol-server
