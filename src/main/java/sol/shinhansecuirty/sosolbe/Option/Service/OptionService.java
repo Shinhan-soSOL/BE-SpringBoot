@@ -5,6 +5,7 @@ import sol.shinhansecuirty.sosolbe.Option.DTO.StockInfoDTO;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class OptionService {
@@ -15,10 +16,10 @@ public class OptionService {
         this.kisService = kisService;
     }
 
-    public ArrayList<StockInfoDTO> getCurrentPrice() {
-        ArrayList<StockInfoDTO> stockInfos = new ArrayList<>();
-        ArrayList<String> stockCodes = new ArrayList<>(Arrays.asList("005360", "079160", "047040", "073240", "055550"));
-        ArrayList<String> stockNames = new ArrayList<>(Arrays.asList("모나미", "CJ CGV", "대우건설", "금호타이어", "신한지주"));
+    public List<StockInfoDTO> getCurrentPrice() {
+        List<StockInfoDTO> stockInfos = new ArrayList<>();
+        List<String> stockCodes = Arrays.asList("005360", "079160", "047040", "073240", "055550");
+        List<String> stockNames = Arrays.asList("모나미", "CJ CGV", "대우건설", "금호타이어", "신한지주");
         for(int i=0;i<stockCodes.size();i++) {
             int currentPrice = kisService.getCurrentPriceFromKIS(stockCodes.get(i));
             StockInfoDTO stockInfoDTO = StockInfoDTO.builder()
