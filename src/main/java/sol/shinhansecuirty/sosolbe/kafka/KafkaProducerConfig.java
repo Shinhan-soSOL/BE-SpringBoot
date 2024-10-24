@@ -12,6 +12,7 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import sol.shinhansecuirty.sosolbe.kafka.dto.OrderDto;
 
 @Configuration
 public class KafkaProducerConfig {
@@ -31,8 +32,7 @@ public class KafkaProducerConfig {
         config.put(ProducerConfig.RETRIES_CONFIG, 3);
         config.put(JsonSerializer.TYPE_MAPPINGS,
                 KafkaUtil.getJsonTypeMapping(
-                        AuthProduceDTO.class,
-                        AttendanceDto.class
+                        OrderDto.class
                 ));
 
         return new DefaultKafkaProducerFactory<>(config);
