@@ -7,8 +7,8 @@ import lombok.Getter;
 @Entity
 @Getter
 @Builder
-@Table(name="change")
-public class Change {
+@Table(name="small_change")
+public class smallChange {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
