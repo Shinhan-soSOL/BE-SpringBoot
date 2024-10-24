@@ -20,7 +20,7 @@ public class OptionController {
         this.optionservice = optionService;
     }
 
-    @GetMapping("option-price")
+    @GetMapping("/api/option-price")
     public ResponseEntity<Map<String, List<StockInfoDTO>>> getPrices() {
         List<StockInfoDTO> stockInfoDTOs = optionservice.getCurrentPrice();
         Map<String, List<StockInfoDTO>> response = new HashMap<>();
