@@ -1,9 +1,6 @@
 package sol.shinhansecuirty.sosolbe.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,6 +9,10 @@ import lombok.Getter;
 @Builder
 @Table(name="change")
 public class Change {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int changeId;
 
     @ManyToOne
     @JoinColumn(name="account_id")

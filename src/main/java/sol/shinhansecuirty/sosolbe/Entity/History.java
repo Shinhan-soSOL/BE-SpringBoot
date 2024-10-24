@@ -1,9 +1,6 @@
 package sol.shinhansecuirty.sosolbe.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,9 +11,12 @@ import lombok.Getter;
 public class History {
 
     @ManyToOne
-    @JoinColumn(name="userId")
+    @JoinColumn(name="user_id")
     private User user;
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private int historyId;
     private String tradeDate;
     private String stockName;
     private String stockCode;
