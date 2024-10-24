@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderDto {
 
+    private int userId;
     private String stockCode;
     private Integer quantity;
 }
