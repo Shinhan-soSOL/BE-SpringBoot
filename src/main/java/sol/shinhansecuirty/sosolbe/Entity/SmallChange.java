@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @Table(name="small_change")
-public class smallChange {
+public class SmallChange {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
