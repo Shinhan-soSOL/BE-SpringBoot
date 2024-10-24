@@ -3,6 +3,7 @@ package sol.shinhansecuirty.sosolbe.Entity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Entity
@@ -12,10 +13,13 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int account_id;
+    private int accountId;
     private String type;
+    @Setter
     private String account;
+    @Setter
     private int balance;
+    @Setter
     private int balanceSize;
 
     @ManyToOne

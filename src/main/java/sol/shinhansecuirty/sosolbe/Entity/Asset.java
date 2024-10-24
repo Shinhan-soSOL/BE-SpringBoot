@@ -11,8 +11,8 @@ import lombok.Getter;
 public class Asset {
 
     @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user;
+    @JoinColumn(name="account_id")
+    private Account accountId;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

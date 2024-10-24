@@ -1,12 +1,11 @@
-package sol.shinhansecuirty.sosolbe.Option.Controller;
+package sol.shinhansecuirty.sosolbe.Controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sol.shinhansecuirty.sosolbe.Option.DTO.StockInfoDTO;
-import sol.shinhansecuirty.sosolbe.Option.Service.OptionService;
+import sol.shinhansecuirty.sosolbe.DTO.StockInfoDTO;
+import sol.shinhansecuirty.sosolbe.Service.OptionService;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,7 @@ public class OptionController {
         this.optionservice = optionService;
     }
 
-    @GetMapping("/api/option-price")
+    @GetMapping("/api/sosol/option-price")
     public ResponseEntity<Map<String, List<StockInfoDTO>>> getPrices() {
         List<StockInfoDTO> stockInfoDTOs = optionservice.getCurrentPrice();
         Map<String, List<StockInfoDTO>> response = new HashMap<>();
