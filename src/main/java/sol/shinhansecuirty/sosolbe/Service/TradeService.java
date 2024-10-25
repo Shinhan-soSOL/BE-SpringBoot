@@ -15,6 +15,10 @@ import sol.shinhansecuirty.sosolbe.repository.SmallChangeRepository;
 import sol.shinhansecuirty.sosolbe.repository.TargetRepository;
 import sol.shinhansecuirty.sosolbe.kafka.dto.OrderDto;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 @Service
 @RequiredArgsConstructor
 public class TradeService {
@@ -51,7 +55,7 @@ public class TradeService {
 
         //현재가 조회
         double targetPrice = kisService.getCurrentPriceFromKIS(target.getStockCode());
-        if((double)smallChange.getCurrentBalance()>targetPrice * 1.01) {
+        if(isJangTime() && (double)smallChange.getCurrentBalance()>targetPrice * 1.01) {
             //카프카 전송
             int quantity = (int) (smallChange.getCurrentBalance()/targetPrice);
             OrderDto orderDto = OrderDto.builder()
@@ -84,5 +88,20 @@ public class TradeService {
                     .build();
             return buyStockResponseDTO;
         }
+    }
+
+    private boolean isJangTime() {
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = now.toLocalDate().atTime(LocalTime.of(9, 0));// 09:00
+        LocalDateTime end = now.toLocalDate().atTime(LocalTime.of(15, 20));// 15:20
+
+        // 현재 시간이 주어진 범위 내에 있는지 확인
+        boolean isInTimeRange = (now.isAfter(start) && now.isBefore(end)) || now.equals(start) || now.equals(end);
+
+        DayOfWeek dayOfWeek = now.getDayOfWeek();
+        boolean isWeekday = (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY);
+
+        return (isInTimeRange && isWeekday);
     }
 }
