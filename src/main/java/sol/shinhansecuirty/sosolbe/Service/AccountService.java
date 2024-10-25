@@ -1,22 +1,13 @@
 package sol.shinhansecuirty.sosolbe.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sol.shinhansecuirty.sosolbe.DTO.AccountRequestDTO;
-import sol.shinhansecuirty.sosolbe.DTO.AccountResponseDTO;
-import sol.shinhansecuirty.sosolbe.DTO.HistoryResponseDTO;
-import sol.shinhansecuirty.sosolbe.Entity.Account;
-import sol.shinhansecuirty.sosolbe.Entity.History;
-import sol.shinhansecuirty.sosolbe.Entity.SmallChange;
-import sol.shinhansecuirty.sosolbe.Entity.Target;
-import sol.shinhansecuirty.sosolbe.Entity.User;
-import sol.shinhansecuirty.sosolbe.repository.AccountRepository;
-import sol.shinhansecuirty.sosolbe.repository.HistoryRepository;
-import sol.shinhansecuirty.sosolbe.repository.TargetRepository;
-import sol.shinhansecuirty.sosolbe.repository.UserRepository;
-import sol.shinhansecuirty.sosolbe.repository.SmallChangeRepository;
+import sol.shinhansecuirty.sosolbe.DTO.*;
+import sol.shinhansecuirty.sosolbe.Entity.*;
+import sol.shinhansecuirty.sosolbe.repository.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +18,8 @@ public class AccountService {
     private final UserRepository userRepository;
     private final SmallChangeRepository smallChangeRepository;
     private final HistoryRepository historyRepository;
+    private final AssetRepository assetRepository;
+    private final KISService kisService;
 
     @Transactional
     public AccountResponseDTO createSoSolInfo(AccountRequestDTO accountRequestDTO) {
@@ -85,4 +78,72 @@ public class AccountService {
         return accountRequestDTO.getStockCode().equals("000000");
     }
 
+    public ChangeDataResponseDTO findChangeAndAsset(int userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        Target target = targetRepository.findByUser(user);
+        Account secAccount = accountRepository.findByUserAndType(user, "증권");
+        SmallChange smallChange = smallChangeRepository.findByAccount(secAccount);
+        List<Asset> assetList = assetRepository.findByAccount(secAccount);
+
+        int sumOfPurchase = 0;
+        int sumOfCurrent = 0;
+        List<AssetInfoDTO> assetInfoDTOs = new ArrayList<>();
+
+        StockInfoDTO targetInfo = StockInfoDTO.builder()
+                .stockCode(target.getStockCode())
+                .stockName(target.getStockName())
+                .currentPrice(kisService.getCurrentPriceFromKIS(target.getStockCode()))
+                .build();
+
+        for(int i=0;i<assetList.size();i++) {
+            AssetInfoDTO assetInfoDTO = getAssetInfo(assetList.get(i));
+            sumOfPurchase += assetInfoDTO.getInvestedAmount();
+            sumOfCurrent += assetInfoDTO.getTotal();
+            assetInfoDTOs.add(assetInfoDTO);
+        }
+        double profitRatio = ceiling((double) (sumOfCurrent-sumOfPurchase)/sumOfPurchase);
+
+        ChangeDataResponseDTO changeDataResponseDTO = ChangeDataResponseDTO.builder()
+                .changeSum(smallChange.getTotal())
+                .changeAmount(smallChange.getCurrentBalance())
+                .investedAmount(smallChange.getTotal()- smallChange.getCurrentBalance())
+                .totalValue(sumOfCurrent)
+                .profitRatio(profitRatio)
+                .goal(targetInfo)
+                .myStocks(assetInfoDTOs)
+                .build();
+
+        return changeDataResponseDTO;
+
+    }
+
+    private AssetInfoDTO getAssetInfo(Asset asset) {
+
+        String parsedStockCode = asset.getStockCode().replaceAll("A", "");
+        double doubleInvestedAmount =  asset.getQuantity() * asset.getAveragePrice();
+        int investedAmount = (int) Math.ceil(doubleInvestedAmount);
+        int quantity = asset.getQuantity();
+        int currentPrice = kisService.getCurrentPriceFromKIS(parsedStockCode);
+        int currentTotal = currentPrice * quantity;
+        int profit = currentTotal-investedAmount;
+        double profitRatio = ceiling((double) profit /investedAmount);
+
+        AssetInfoDTO assetInfoDTO = AssetInfoDTO.builder()
+                .stockCode(parsedStockCode)
+                .stockName(asset.getStockName())
+                .quantity(quantity)
+                .investedAmount(investedAmount)
+                .total(currentTotal)
+                .profit(profit)
+                .avgPrice(asset.getAveragePrice())
+                .profitRatio(profitRatio)
+                .currentPrice(currentPrice)
+                .build();
+
+        return assetInfoDTO;
+    }
+
+    private double ceiling(double input) {
+        return (double) Math.round(input * 100) / 100; // 소수점 셋째 자리에서 올림
+    }
 }
