@@ -1,5 +1,6 @@
 package sol.shinhansecuirty.sosolbe.Controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping("/api/sosol/accounts")
-    public ResponseEntity<ResponseDTO> makeSoSolAccount(@RequestBody AccountRequestDTO accountRequestDTO) {
+    public ResponseEntity<ResponseDTO> makeSoSolAccount(@Valid @RequestBody AccountRequestDTO accountRequestDTO) {
 
         if(accountService.createSoSolInfo(accountRequestDTO) != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDTO("201","등록되었습니다."));
