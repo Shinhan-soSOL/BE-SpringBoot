@@ -1,14 +1,15 @@
 package sol.shinhansecuirty.sosolbe.Entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name="small_change")
-public class smallChange {
+public class SmallChange {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +19,8 @@ public class smallChange {
     @JoinColumn(name="account_id")
     private Account account;
 
+    @Setter
     private int total;
-    private int current_balance;
+    @Setter
+    private int currentBalance;
 }

@@ -6,23 +6,22 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Getter
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="asset")
-public class Asset {
+@Table(name="security_account")
+public class SecurityAccount {
 
     @ManyToOne
-    @JoinColumn(name="account_id")
-    private Account accountId;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int assetId;
-    private String stockCode;
-    private String stockName;
-    private int quantity;
-    private double averagePrice;
+    private int securityAccountId;
+    private String accountNumber;
+    private String accountName;
+
 }

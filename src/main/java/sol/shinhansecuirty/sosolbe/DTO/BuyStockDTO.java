@@ -1,12 +1,12 @@
-package sol.shinhansecuirty.sosolbe.Option.DTO;
+package sol.shinhansecuirty.sosolbe.DTO;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class StockInfoDTO {
+public class BuyStockDTO {
     private String stockName;
     private String stockCode;
-    private int currentPrice;
+    private int quantity;
 }

@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 public class OrderDto {
 
     private int userId;
+    private int accountId;
     private String stockCode;
     private Integer quantity;
+    private int currentBalance;
 }
