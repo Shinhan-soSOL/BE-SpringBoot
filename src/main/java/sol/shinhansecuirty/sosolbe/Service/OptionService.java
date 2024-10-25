@@ -19,13 +19,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OptionService {
 
-    private KISService kisService;
-    private UserRepository userRepository;
-    private SecurityAccountRepository securityAccountRepository;
-
-    public OptionService(KISService kisService) {
-        this.kisService = kisService;
-    }
+    private final KISService kisService;
+    private final UserRepository userRepository;
+    private final SecurityAccountRepository securityAccountRepository;
 
     public List<StockInfoDTO> getCurrentPrice() {
         List<StockInfoDTO> stockInfos = new ArrayList<>();
