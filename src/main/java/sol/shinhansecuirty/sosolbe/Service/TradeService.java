@@ -10,9 +10,9 @@ import sol.shinhansecuirty.sosolbe.DTO.BuyStockResponseDTO;
 import sol.shinhansecuirty.sosolbe.Entity.Account;
 import sol.shinhansecuirty.sosolbe.Entity.SmallChange;
 import sol.shinhansecuirty.sosolbe.Entity.Target;
-import sol.shinhansecuirty.sosolbe.Repository.AccountRepository;
-import sol.shinhansecuirty.sosolbe.Repository.SmallChangeRepository;
-import sol.shinhansecuirty.sosolbe.Repository.TargetRepository;
+import sol.shinhansecuirty.sosolbe.repository.AccountRepository;
+import sol.shinhansecuirty.sosolbe.repository.SmallChangeRepository;
+import sol.shinhansecuirty.sosolbe.repository.TargetRepository;
 import sol.shinhansecuirty.sosolbe.kafka.dto.OrderDto;
 
 @Service
