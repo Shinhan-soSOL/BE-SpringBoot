@@ -67,8 +67,9 @@ public class TradeService {
             int quantity = (int) (smallChange.getCurrentBalance()/targetPrice);
             OrderDto orderDto = OrderDto.builder()
                     .userId(mySecurity.getUser().getUserId())
-                    .accountId(myBank.getAccountId())
+                    .accountId(mySecurity.getAccountId())
                     .stockCode(target.getStockCode())
+                    .stockName(target.getStockName())
                     .quantity(quantity)
                     .currentBalance(smallChange.getCurrentBalance())
                     .build();
