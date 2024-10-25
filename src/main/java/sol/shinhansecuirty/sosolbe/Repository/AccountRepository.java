@@ -5,6 +5,6 @@ import sol.shinhansecuirty.sosolbe.Entity.Account;
 import sol.shinhansecuirty.sosolbe.Entity.User;
 
 public interface AccountRepository extends JpaRepository<Account, Integer> {
-    Account findByAccountNumAndType(String account, String type);
+    Account findByAccountNumAndType(String accountNum, String type);
     Account findByUserAndType(User user, String type);
 }
