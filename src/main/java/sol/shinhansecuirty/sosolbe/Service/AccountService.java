@@ -1,15 +1,19 @@
 package sol.shinhansecuirty.sosolbe.Service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sol.shinhansecuirty.sosolbe.DTO.AccountRequestDTO;
 import sol.shinhansecuirty.sosolbe.DTO.AccountResponseDTO;
+import sol.shinhansecuirty.sosolbe.DTO.HistoryResponseDTO;
 import sol.shinhansecuirty.sosolbe.Entity.Account;
+import sol.shinhansecuirty.sosolbe.Entity.History;
 import sol.shinhansecuirty.sosolbe.Entity.SmallChange;
 import sol.shinhansecuirty.sosolbe.Entity.Target;
 import sol.shinhansecuirty.sosolbe.Entity.User;
 import sol.shinhansecuirty.sosolbe.repository.AccountRepository;
+import sol.shinhansecuirty.sosolbe.repository.HistoryRepository;
 import sol.shinhansecuirty.sosolbe.repository.TargetRepository;
 import sol.shinhansecuirty.sosolbe.repository.UserRepository;
 import sol.shinhansecuirty.sosolbe.repository.SmallChangeRepository;
@@ -22,12 +26,12 @@ public class AccountService {
     private final TargetRepository targetRepository;
     private final UserRepository userRepository;
     private final SmallChangeRepository smallChangeRepository;
+    private final HistoryRepository historyRepository;
 
     @Transactional
     public AccountResponseDTO createSoSolInfo(AccountRequestDTO accountRequestDTO) {
         //TODO: Exception 처리하기
         User user = userRepository.findById(accountRequestDTO.getUserId()).orElse(null);
-        //TODO : save도 해야하고 현재 저장하는 정보가 맞는지 체크
         if(!isOnlySaving(accountRequestDTO)) {
             Target target = Target.builder()
                     .user(user)
@@ -66,6 +70,15 @@ public class AccountService {
             return AccountResponseDTO.from(target,bankAccount,securityAccount);
         }
         return null;
+    }
+
+    public HistoryResponseDTO findChangeHistory(int userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        List<History> historys =  historyRepository.findByUser(user);
+
+        return HistoryResponseDTO.builder()
+                .tradings(historys)
+                .build();
     }
 
     private static boolean isOnlySaving(AccountRequestDTO accountRequestDTO) {
