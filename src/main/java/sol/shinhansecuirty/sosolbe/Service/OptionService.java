@@ -25,8 +25,8 @@ public class OptionService {
 
     public List<StockInfoDTO> getCurrentPrice() {
         List<StockInfoDTO> stockInfos = new ArrayList<>();
-        List<String> stockCodes = Arrays.asList("005360", "079160", "047040", "073240", "055550");
-        List<String> stockNames = Arrays.asList("모나미", "CJ CGV", "대우건설", "금호타이어", "신한지주");
+        List<String> stockCodes = Arrays.asList("005360", "079160", "047040", "096630", "055550");
+        List<String> stockNames = Arrays.asList("모나미", "CJ CGV", "대우건설", "에스코넥", "신한지주");
         for(int i=0;i<stockCodes.size();i++) {
             int currentPrice = kisService.getCurrentPriceFromKIS(stockCodes.get(i));
             StockInfoDTO stockInfoDTO = StockInfoDTO.builder()
