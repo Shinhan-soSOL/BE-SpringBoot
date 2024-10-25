@@ -13,15 +13,15 @@ import java.util.Map;
 @RestController
 public class OptionController {
 
-    private final OptionService optionservice;
+    private final OptionService optionService;
 
     public OptionController (OptionService optionService) {
-        this.optionservice = optionService;
+        this.optionService = optionService;
     }
 
     @GetMapping("/api/sosol/option-price")
     public ResponseEntity<Map<String, List<StockInfoDTO>>> getPrices() {
-        List<StockInfoDTO> stockInfoDTOs = optionservice.getCurrentPrice();
+        List<StockInfoDTO> stockInfoDTOs = optionService.getCurrentPrice();
         Map<String, List<StockInfoDTO>> response = new HashMap<>();
         response.put("stocks", stockInfoDTOs);
         return ResponseEntity.ok(response);
