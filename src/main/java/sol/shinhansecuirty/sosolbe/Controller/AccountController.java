@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sol.shinhansecuirty.sosolbe.DTO.AccountRequestDTO;
 import sol.shinhansecuirty.sosolbe.DTO.HistoryResponseDTO;
@@ -32,9 +33,11 @@ public class AccountController {
 
     }
 
-    @GetMapping("/history/{userId}")
-    public ResponseEntity<HistoryResponseDTO> getChangeInvestHistory(@PathVariable Integer userId) {
-        //TODO:: 예외처리 필요!
+    @GetMapping("/history")
+    public ResponseEntity<HistoryResponseDTO> getChangeInvestHistory(@RequestParam(defaultValue = "0") int userId) {
+        if(userId == 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
         HistoryResponseDTO historyResponseDTO = accountService.findChangeHistory(userId);
         return ResponseEntity.status(HttpStatus.OK).body(historyResponseDTO);
     }
