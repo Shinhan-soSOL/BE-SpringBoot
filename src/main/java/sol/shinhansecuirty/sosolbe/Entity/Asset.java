@@ -16,7 +16,7 @@ public class Asset {
 
     @ManyToOne
     @JoinColumn(name="account_id")
-    private Account accountId;
+    private Account account;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
