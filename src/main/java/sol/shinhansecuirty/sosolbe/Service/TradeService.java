@@ -10,9 +10,9 @@ import sol.shinhansecuirty.sosolbe.DTO.BuyStockResponseDTO;
 import sol.shinhansecuirty.sosolbe.Entity.Account;
 import sol.shinhansecuirty.sosolbe.Entity.SmallChange;
 import sol.shinhansecuirty.sosolbe.Entity.Target;
-import sol.shinhansecuirty.sosolbe.Repository.AccountRepository;
-import sol.shinhansecuirty.sosolbe.Repository.SmallChangeRepository;
-import sol.shinhansecuirty.sosolbe.Repository.TargetRepository;
+import sol.shinhansecuirty.sosolbe.repository.AccountRepository;
+import sol.shinhansecuirty.sosolbe.repository.SmallChangeRepository;
+import sol.shinhansecuirty.sosolbe.repository.TargetRepository;
 import sol.shinhansecuirty.sosolbe.kafka.dto.OrderDto;
 
 @Service
@@ -28,7 +28,7 @@ public class TradeService {
     @Transactional
     public BuyStockResponseDTO updateAccount(BankUpdateDTO bankUpdateDTO) {
         //계좌 정보 조회
-        Account myBank = accountRepository.findByAccountAndType(bankUpdateDTO.getAccount(), "은행");
+        Account myBank = accountRepository.findByAccountNumAndType(bankUpdateDTO.getAccount(), "은행");
         System.out.println("차감 전 : " + myBank.getBalance());
         //은행계좌에서 차감
         myBank.setBalance(myBank.getBalance() - bankUpdateDTO.getTradePrice());
