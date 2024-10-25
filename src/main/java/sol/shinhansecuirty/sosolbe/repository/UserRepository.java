@@ -7,3 +7,4 @@ import sol.shinhansecuirty.sosolbe.Entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 }
+
