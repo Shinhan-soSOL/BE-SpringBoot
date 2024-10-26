@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sol.shinhansecuirty.sosolbe.DTO.BalanceResponseDTO;
 import sol.shinhansecuirty.sosolbe.DTO.BankUpdateDTO;
 import sol.shinhansecuirty.sosolbe.DTO.BuyStockDTO;
 import sol.shinhansecuirty.sosolbe.DTO.BuyStockResponseDTO;
@@ -50,6 +51,12 @@ public class TradeService {
         smallChange.setCurrentBalance(smallChange.getCurrentBalance() + small);
         smallChange.setTotal(smallChange.getTotal() + small);
 
+        BalanceResponseDTO balanceResponseDTO = BalanceResponseDTO.builder()
+                .bankBalance(myBank.getBalance())
+                .secBalance(mySecurity.getBalance())
+                .changeBalance(smallChange.getCurrentBalance())
+                .build();
+
         //목표 주식 정보 조회
         Target target = targetRepository.findByUser(mySecurity.getUser());
 
@@ -76,6 +83,7 @@ public class TradeService {
 
             BuyStockResponseDTO buyStockResponseDTO = BuyStockResponseDTO.builder()
                     .addedChange(small)
+                    .balance(balanceResponseDTO)
                     .isBuy(true)
                     .buyStockDTO(buyStockDTO)
                     .build();
@@ -84,6 +92,7 @@ public class TradeService {
         else {
             BuyStockResponseDTO buyStockResponseDTO = BuyStockResponseDTO.builder()
                     .addedChange(small)
+                    .balance(balanceResponseDTO)
                     .isBuy(false)
                     .build();
             return buyStockResponseDTO;

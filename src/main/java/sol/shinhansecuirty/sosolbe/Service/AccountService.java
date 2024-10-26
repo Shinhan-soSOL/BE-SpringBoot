@@ -2,6 +2,8 @@ package sol.shinhansecuirty.sosolbe.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -145,5 +147,19 @@ public class AccountService {
 
     private double ceiling(double input) {
         return (double) Math.round(input * 100) / 100; // 소수점 셋째 자리에서 올림
+    }
+
+    public BalanceResponseDTO getBalanceInfo(int userId) {
+        Optional<User> user = userRepository.findById(userId);
+        Account myBank = accountRepository.findByUserAndType(user.get(), "은행");
+        Account mySec = accountRepository.findByUserAndType(user.get(), "증권");
+        SmallChange smallChange = smallChangeRepository.findByAccount(mySec);
+        BalanceResponseDTO balanceResponseDTO = BalanceResponseDTO.builder()
+                .bankBalance(myBank.getBalance())
+                .secBalance(mySec.getBalance())
+                .changeBalance(smallChange.getCurrentBalance())
+                .build();
+
+        return balanceResponseDTO;
     }
 }
