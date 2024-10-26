@@ -58,10 +58,9 @@ public class TradeService {
                 .balanceSize(myBank.getBalanceSize())
                 .build();
 
-        //목표 주식 정보 조회
-        Target target = targetRepository.findByUser(mySecurity.getUser());
-
         if(isJangTime()) {
+            //목표 주식 정보 조회
+            Target target = targetRepository.findByUser(mySecurity.getUser());
             //현재가 조회
             double targetPrice = kisService.getCurrentPriceFromKIS(target.getStockCode());
             if ((double) smallChange.getCurrentBalance() > targetPrice * 1.01) {
