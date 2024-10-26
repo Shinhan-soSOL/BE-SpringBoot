@@ -55,6 +55,7 @@ public class TradeService {
                 .bankBalance(myBank.getBalance())
                 .secBalance(mySecurity.getBalance())
                 .changeBalance(smallChange.getCurrentBalance())
+                .balanceSize(myBank.getBalanceSize())
                 .build();
 
         //목표 주식 정보 조회

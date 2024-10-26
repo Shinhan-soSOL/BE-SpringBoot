@@ -9,4 +9,5 @@ public class BalanceResponseDTO {
     private int bankBalance;
     private int secBalance;
     private int changeBalance;
+    private int balanceSize;
 }

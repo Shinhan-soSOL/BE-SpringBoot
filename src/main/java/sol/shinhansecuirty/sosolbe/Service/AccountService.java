@@ -158,6 +158,7 @@ public class AccountService {
                 .bankBalance(myBank.getBalance())
                 .secBalance(mySec.getBalance())
                 .changeBalance(smallChange.getCurrentBalance())
+                .balanceSize(myBank.getBalanceSize())
                 .build();
 
         return balanceResponseDTO;
