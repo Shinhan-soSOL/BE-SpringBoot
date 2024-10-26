@@ -3,6 +3,7 @@ package sol.shinhansecuirty.sosolbe.Controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sol.shinhansecuirty.sosolbe.DTO.BankUpdateDTO;
 import sol.shinhansecuirty.sosolbe.DTO.BuyStockResponseDTO;
@@ -17,8 +18,8 @@ public class TradeController {
     }
 
     @PostMapping("/api/sosol/make-money")
-    public ResponseEntity<BuyStockResponseDTO> checkChange(@RequestBody BankUpdateDTO bankUpdateDTO) {
-        BuyStockResponseDTO buyStockResponseDTO = tradeService.updateAccount(bankUpdateDTO);
+    public ResponseEntity<BuyStockResponseDTO> checkChange(@RequestParam("id") int userId, @RequestBody BankUpdateDTO bankUpdateDTO) {
+        BuyStockResponseDTO buyStockResponseDTO = tradeService.updateAccount(userId, bankUpdateDTO);
         return ResponseEntity.ok(buyStockResponseDTO);
     }
 }
