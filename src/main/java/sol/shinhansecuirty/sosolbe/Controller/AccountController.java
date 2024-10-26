@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import sol.shinhansecuirty.sosolbe.DTO.AccountRequestDTO;
-import sol.shinhansecuirty.sosolbe.DTO.ChangeDataResponseDTO;
-import sol.shinhansecuirty.sosolbe.DTO.HistoryResponseDTO;
-import sol.shinhansecuirty.sosolbe.DTO.ResponseDTO;
+import sol.shinhansecuirty.sosolbe.DTO.*;
 import sol.shinhansecuirty.sosolbe.Service.AccountService;
 
 @RestController
@@ -47,5 +44,11 @@ public class AccountController {
     public ResponseEntity<ChangeDataResponseDTO> getChangeAndAssetInfo(@RequestParam("userId") int userId) {
         ChangeDataResponseDTO changeDataResponseDTO = accountService.findChangeAndAsset(userId);
         return ResponseEntity.status(HttpStatus.OK).body(changeDataResponseDTO);
+    }
+
+    @GetMapping("/balance")
+    public ResponseEntity<BalanceResponseDTO> getBalance(@RequestParam("userId") int userId) {
+        BalanceResponseDTO balanceResponseDTO = accountService.getBalanceInfo(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(balanceResponseDTO);
     }
 }
