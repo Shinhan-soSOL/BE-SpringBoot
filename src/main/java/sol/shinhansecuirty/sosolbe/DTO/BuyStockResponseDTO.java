@@ -7,6 +7,7 @@ import lombok.Getter;
 @Builder
 public class BuyStockResponseDTO {
     private int addedChange;
+    private BalanceResponseDTO balance;
     private boolean isBuy;
     private BuyStockDTO buyStockDTO;
 }
