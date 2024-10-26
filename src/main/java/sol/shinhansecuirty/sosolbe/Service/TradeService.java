@@ -58,37 +58,46 @@ public class TradeService {
                 .balanceSize(myBank.getBalanceSize())
                 .build();
 
-        //목표 주식 정보 조회
-        Target target = targetRepository.findByUser(mySecurity.getUser());
+        if(isJangTime()) {
+            //목표 주식 정보 조회
+            Target target = targetRepository.findByUser(mySecurity.getUser());
+            //현재가 조회
+            double targetPrice = kisService.getCurrentPriceFromKIS(target.getStockCode());
+            if ((double) smallChange.getCurrentBalance() > targetPrice * 1.01) {
+                //카프카 전송
+                int quantity = (int) (smallChange.getCurrentBalance() / targetPrice);
+                OrderDto orderDto = OrderDto.builder()
+                        .userId(mySecurity.getUser().getUserId())
+                        .accountId(mySecurity.getAccountId())
+                        .stockCode(target.getStockCode())
+                        .stockName(target.getStockName())
+                        .quantity(quantity)
+                        .currentBalance(smallChange.getCurrentBalance())
+                        .build();
+                kafkaTemplate.send("order", orderDto);
 
-        //현재가 조회
-        double targetPrice = kisService.getCurrentPriceFromKIS(target.getStockCode());
-        if(isJangTime() && (double)smallChange.getCurrentBalance()>targetPrice * 1.01) {
-            //카프카 전송
-            int quantity = (int) (smallChange.getCurrentBalance()/targetPrice);
-            OrderDto orderDto = OrderDto.builder()
-                    .userId(mySecurity.getUser().getUserId())
-                    .accountId(mySecurity.getAccountId())
-                    .stockCode(target.getStockCode())
-                    .stockName(target.getStockName())
-                    .quantity(quantity)
-                    .currentBalance(smallChange.getCurrentBalance())
-                    .build();
-            kafkaTemplate.send("order", orderDto);
+                BuyStockDTO buyStockDTO = BuyStockDTO.builder()
+                        .stockName(target.getStockName())
+                        .stockCode(target.getStockCode())
+                        .quantity(quantity)
+                        .build();
 
-            BuyStockDTO buyStockDTO = BuyStockDTO.builder()
-                    .stockName(target.getStockName())
-                    .stockCode(target.getStockCode())
-                    .quantity(quantity)
-                    .build();
-
-            BuyStockResponseDTO buyStockResponseDTO = BuyStockResponseDTO.builder()
-                    .addedChange(small)
-                    .balance(balanceResponseDTO)
-                    .isBuy(true)
-                    .buyStockDTO(buyStockDTO)
-                    .build();
-            return buyStockResponseDTO;
+                BuyStockResponseDTO buyStockResponseDTO = BuyStockResponseDTO.builder()
+                        .addedChange(small)
+                        .balance(balanceResponseDTO)
+                        .isBuy(true)
+                        .buyStockDTO(buyStockDTO)
+                        .build();
+                return buyStockResponseDTO;
+            }
+            else {
+                BuyStockResponseDTO buyStockResponseDTO = BuyStockResponseDTO.builder()
+                        .addedChange(small)
+                        .balance(balanceResponseDTO)
+                        .isBuy(false)
+                        .build();
+                return buyStockResponseDTO;
+            }
         }
         else {
             BuyStockResponseDTO buyStockResponseDTO = BuyStockResponseDTO.builder()
