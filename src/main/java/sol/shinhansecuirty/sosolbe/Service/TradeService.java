@@ -11,10 +11,12 @@ import sol.shinhansecuirty.sosolbe.DTO.BuyStockResponseDTO;
 import sol.shinhansecuirty.sosolbe.Entity.Account;
 import sol.shinhansecuirty.sosolbe.Entity.SmallChange;
 import sol.shinhansecuirty.sosolbe.Entity.Target;
+import sol.shinhansecuirty.sosolbe.Entity.User;
 import sol.shinhansecuirty.sosolbe.repository.AccountRepository;
 import sol.shinhansecuirty.sosolbe.repository.SmallChangeRepository;
 import sol.shinhansecuirty.sosolbe.repository.TargetRepository;
 import sol.shinhansecuirty.sosolbe.kafka.dto.OrderDto;
+import sol.shinhansecuirty.sosolbe.repository.UserRepository;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -27,13 +29,15 @@ public class TradeService {
     private final AccountRepository accountRepository;
     private final SmallChangeRepository smallChangeRepository;
     private final TargetRepository targetRepository;
+    private final UserRepository userRepository;
     private final KISService kisService;
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Transactional
-    public BuyStockResponseDTO updateAccount(BankUpdateDTO bankUpdateDTO) {
+    public BuyStockResponseDTO updateAccount(int userId, BankUpdateDTO bankUpdateDTO) {
+        User user = userRepository.findById(userId).orElse(null);
         //계좌 정보 조회
-        Account myBank = accountRepository.findByAccountNumAndType(bankUpdateDTO.getAccountNum(), "은행");
+        Account myBank = accountRepository.findByUserAndType(user, "은행");
         //은행계좌에서 차감
         myBank.setBalance(myBank.getBalance() - bankUpdateDTO.getTradePrice());
         //잔액에서 잔돈 추출, 은행계좌 잔돈 차감
@@ -43,7 +47,7 @@ public class TradeService {
         accountRepository.save(myBank);
 
         //증권계좌 가져와서 잔액 업데이트
-        Account mySecurity = accountRepository.findByUserAndType(myBank.getUser(), "증권");
+        Account mySecurity = accountRepository.findByUserAndType(user, "증권");
         mySecurity.setBalance(mySecurity.getBalance() + small);
 
         //잔돈 불러와서 업데이트
