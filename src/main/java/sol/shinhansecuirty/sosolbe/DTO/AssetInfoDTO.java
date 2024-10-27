@@ -12,7 +12,7 @@ public class AssetInfoDTO {
     private int investedAmount;//구매가 총합
     private int profit;//수익
     private int total;//현재 가치 총합(현재가 * 보유수량)
-    private double avgPrice;//평단가
+    private int avgPrice;//평단가
     private double profitRatio;
     private int currentPrice;
 }
