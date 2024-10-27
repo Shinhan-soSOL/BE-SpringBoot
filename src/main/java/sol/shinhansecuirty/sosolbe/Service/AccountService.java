@@ -103,7 +103,7 @@ public class AccountService {
             sumOfCurrent += assetInfoDTO.getTotal();
             assetInfoDTOs.add(assetInfoDTO);
         }
-        double profitRatio = ceiling((double) (sumOfCurrent-sumOfPurchase)/sumOfPurchase);
+        double profitRatio = rounding((double) (sumOfCurrent-sumOfPurchase)/sumOfPurchase);
 
         ChangeDataResponseDTO changeDataResponseDTO = ChangeDataResponseDTO.builder()
                 .changeSum(smallChange.getTotal())
@@ -122,13 +122,13 @@ public class AccountService {
     private AssetInfoDTO getAssetInfo(Asset asset) {
 
         String parsedStockCode = asset.getStockCode().replaceAll("A", "");
-        double doubleInvestedAmount =  asset.getQuantity() * asset.getAveragePrice();
+        double doubleInvestedAmount =  asset.getQuantity() * ceiling(asset.getAveragePrice());
         int investedAmount = (int) Math.ceil(doubleInvestedAmount);
         int quantity = asset.getQuantity();
         int currentPrice = kisService.getCurrentPriceFromKIS(parsedStockCode);
         int currentTotal = currentPrice * quantity;
         int profit = currentTotal-investedAmount;
-        double profitRatio = ceiling((double) profit /investedAmount);
+        double profitRatio = rounding((double) profit /investedAmount);
 
         AssetInfoDTO assetInfoDTO = AssetInfoDTO.builder()
                 .stockCode(parsedStockCode)
@@ -137,7 +137,7 @@ public class AccountService {
                 .investedAmount(investedAmount)
                 .total(currentTotal)
                 .profit(profit)
-                .avgPrice(asset.getAveragePrice())
+                .avgPrice(ceiling(asset.getAveragePrice()))
                 .profitRatio(profitRatio)
                 .currentPrice(currentPrice)
                 .build();
@@ -145,8 +145,12 @@ public class AccountService {
         return assetInfoDTO;
     }
 
-    private double ceiling(double input) {
-        return (double) Math.round(input * 100) / 100; // 소수점 셋째 자리에서 올림
+    private double rounding(double input) {
+        return (double) Math.round(input * 100); // 소수점 셋째 자리에서 올림
+    }
+
+    private int ceiling(double input) {
+        return (int) (input+0.9999);
     }
 
     public BalanceResponseDTO getBalanceInfo(int userId) {
