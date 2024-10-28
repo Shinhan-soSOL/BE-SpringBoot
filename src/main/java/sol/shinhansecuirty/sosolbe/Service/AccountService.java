@@ -146,7 +146,7 @@ public class AccountService {
     }
 
     private double rounding(double input) {
-        return (double) Math.round(input * 100); // 소수점 셋째 자리에서 올림
+        return (double) Math.round(input * 10000) / 100;
     }
 
     private int ceiling(double input) {
