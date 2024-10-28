@@ -29,3 +29,8 @@ app:
   secretkey: ${APP_SECRETKEY}
 kis:
   access-token: ${ACCESS_TOKEN}
+
+logging:
+  level:
+    org.springframework.web: DEBUG    # 웹 요청 로깅
+    org.apache.kafka: INFO
