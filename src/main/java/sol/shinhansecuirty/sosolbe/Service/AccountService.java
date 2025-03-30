@@ -1,6 +1,7 @@
 package sol.shinhansecuirty.sosolbe.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,6 +71,7 @@ public class AccountService {
     public HistoryResponseDTO findChangeHistory(int userId) {
         User user = userRepository.findById(userId).orElse(null);
         List<History> historys =  historyRepository.findByUser(user);
+        historys.sort((h1, h2) -> h2.getTradeDate().compareTo(h1.getTradeDate()));
 
         return HistoryResponseDTO.builder()
                 .tradings(historys)
